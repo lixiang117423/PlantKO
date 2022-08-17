@@ -28,18 +28,21 @@ mod_View_server <- function(id) {
     load("./data/meta.table.rda")
     output$view <- DT::renderDataTable({
       DT::datatable(meta.table %>%
+        dplyr::mutate(Version = as.character(Version)) %>%
+        dplyr::mutate(Link = ToLink("Click download", DownloadLink)) %>%
         dplyr::select(
           Plant_latin,
           Plant_Chinese,
           Order,
           Family,
-          Version
-        ) %>%
-        dplyr::mutate(Version = as.character(Version)),
+          Version,
+          Link
+        ),
       options = list(
         lengthMenu = c(10, 30, 50),
         pageLength = 10
-      )
+      ),
+      escape = FALSE
       )
     })
   })
